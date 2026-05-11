@@ -212,7 +212,6 @@
     padding: 3px 10px; border-radius: 100px; margin-bottom: 6px;
   }
   .timeline-card .event-time { font-size: 13px; color: #888; }
-  .timeline-card .event-location { font-size: 13px; color: #888; margin-top: 2px; }
 
   /* ===== LOCATION ===== */
   .event-location {
@@ -224,6 +223,19 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* ===== DRSCRIPTION ===== */
+  .event-description {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
   }
 
   /* ===== CALENDAR VIEW ===== */
@@ -673,6 +685,7 @@ function renderTimeline() {
             ${catTags}
             ${ts ? `<div class="event-time">🕐 ${ts}</div>` : ''}
             ${ev.location ? `<div class="event-location">📍 ${ev.location}</div>` : ''}
+            ${ev.description ? `<div class="event-description">📝 ${ev.description}</div>` : ''}
           </div>
         </div>`;
       idx++;
