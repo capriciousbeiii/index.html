@@ -405,7 +405,7 @@
   <div class="rotary-logo-text">ROTARACT DISTRICT 3501</div>
   <p>國際扶輪 3501 地區 扶青社 地區行事曆</p>
   <p>2026-2027年度</p>
-  <p class="rotary-logo-text">Create Lasting Impact ・ 創造持衡的影響</p>
+  <p class="rotary-logo-text">CREARE LASTING IMPACT ・ 創造持衡的影響</p>
   <div class="footer-links">
     <a href="https://www.rotary.org" target="_blank">進入RI網站</a>
     <a href="https://calendar.google.com" target="_blank">管理行事曆</a>
@@ -488,6 +488,7 @@ async function fetchEvents() {
         location: ev.location || '',
         allDay: !ev.start.dateTime,
         isRep: false,
+        description: ev.description || '',
       });
     });
     allEvents = tempEvents;
