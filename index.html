@@ -152,6 +152,8 @@
   /* ===== TIMELINE ===== */
   .timeline-section {
     max-width: 1100px; margin: 30px auto 60px; padding: 0 24px; position: relative;
+    max-height: 80vh; overflow-y: auto; scroll-behavior: smooth;
+    border-radius: 16px;
   }
   .timeline { position: relative; padding: 20px 0; }
   .timeline::before {
@@ -668,8 +670,25 @@ function renderTimeline() {
     html += `</div>`;
   });
 
-  loading.style.display = 'none'; noEvents.style.display = 'none';
-  timeline.innerHTML = html; timeline.style.display = 'block';
+ const today = new Date();
+  today.setHours(0,0,0,0);
+  const items = timeline.querySelectorAll('.timeline-item');
+  let nearest = null;
+  let minDiff = Infinity;
+  items.forEach(item => {
+    const dateText = item.querySelector('.event-date')?.textContent;
+    if (!dateText) return;
+    const match = dateText.match(/(\d+)\/(\d+)/);
+    if (!match) return;
+    const evDate = new Date(currentYear, parseInt(match[1])-1, parseInt(match[2]));
+    const diff = evDate - today;
+    if (diff >= 0 && diff < minDiff) { minDiff = diff; nearest = item; }
+  });
+  if (nearest) {
+    const container = document.getElementById('timelineSection');
+    setTimeout(() => {
+      nearest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
 }
 
 function switchView(view, btn) {
