@@ -670,7 +670,7 @@ function renderTimeline() {
     html += `</div>`;
   });
 
- const today = new Date();
+  const today = new Date();
   today.setHours(0,0,0,0);
   const items = timeline.querySelectorAll('.timeline-item');
   let nearest = null;
