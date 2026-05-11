@@ -8,11 +8,11 @@
     <style>
       /* 定義 CSS 變數，方便統一管理顏色和樣式 */
       :root {
-        --rotary-blue: #3e517a; /* 扶輪藍色 */
-        --rotary-gold: #a8e0ff; /* 扶輪金色 */
-        --rotary-cranberry: #0e0e52; /* 扶輪紅色 */
+        --rotary-blue: #003366; /* 扶輪藍色 */
+        --rotary-gold: #F7A81B; /* 扶輪金色 */
+        --rotary-cranberry: #D91B5C; /* 扶輪紅色 */
         --deep-navy: #001a33; /* 深海軍藍色 */
-        --warm-white: #e8f1f2; /* 溫暖白色背景 */
+        --warm-white: #FFF9F0; /* 溫暖白色背景 */
         --card-bg: rgba(255,255,255,0.95); /* 卡片背景透明度 */
         --text-primary: #1a1a2e; /* 主文字顏色 */
         --text-secondary: #4a4a6a; /* 次要文字顏色 */
@@ -723,7 +723,7 @@
   <!-- 波浪分隔線 -->
   <div class="wave-divider">
     <svg viewBox="0 0 1440 50" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 0L60 4C120 8 240 16 360 20C480 24 600 24 720 20C840 16 960 8 1080 6C1200 4 1320 8 1380 10L1440 12V50H0V0Z" fill="#e8f1f2"/>
+      <path d="M0 0L60 4C120 8 240 16 360 20C480 24 600 24 720 20C840 16 960 8 1080 6C1200 4 1320 8 1380 10L1440 12V50H0V0Z" fill="#FFF9F0"/>
       <!-- 使用 SVG 繪製波浪形狀，作為視覺分隔線 -->
     </svg>
   </div>
@@ -832,22 +832,36 @@
     const REP_CALENDAR_ID = '76e1c69e567a4d7f10e0c3a4ecc03cd52a4799b062a0cae930e82a013f275144@group.calendar.google.com'; // 代表行程日曆 ID
     const REP_CATEGORY = '代表行程'; // 代表行程分類名稱
 
+    const PRESET_CATEGORY_COLORS = {
+      '地區': { bg:'#FFE0EC', color:'#C2185B', border:'#F48FB1' }, // 地區 粉紅
+      '扶輪': { bg:'#FFF3E0', color:'#E65100', border:'#FFB74D' }, // 扶輪 橙色
+      '會議': { bg:'#FFF8E1', color:'#F57F17', border:'#FFD54F' }, // 會議 紅色
+      '西北': { bg:'#E0F2FE', color:'#0277BD', border:'#0072E3' }, // 西北
+      '聯大': { bg:'#E8F5E9', color:'#2E7D32', border:'#81C784' }, // 聯大
+      '中壢': { bg:'#EDE7F6', color:'#5E35B1', border:'#B39DDB' }, // 中壢
+      '中央': { bg:'#FFF8E1', color:'#F57F17', border:'#FFD54F' }, // 中央
+      '國際': { bg:'#EDE7F6', color:'#5E35B1', border:'#B39DDB' }, // 國際 紫色
+      '職業': { bg:'#E0F2FE', color:'#0277BD', border:'#0072E3' }, // 職業 藍色
+      '社區': { bg:'#E8F5E9', color:'#2E7D32', border:'#81C784' }, // 社區 綠色
+      '社務': { bg:'#FFF8E1', color:'#F57F17', border:'#FFD54F' }, // 社務 黃色
+      // 可以在此處新增更多預設標籤及其顏色
+    };
+
+	// 定義預設標籤的排序
+    const PRESET_CATEGORY_ORDER = [
+      '地區', '扶輪', '會議', '西北', '聯大', '中壢', '中央', '國際', '職業', '社區', '社務'
+    ];
+
     // 定義不同分類的顏色樣式
     const CATEGORY_COLORS = [
-      { bg:'#FFE0EC', color:'#C2185B', border:'#F48FB1' }, // 粉紅
-      { bg:'#BBD7FF', color:'#1C4A8C', border:'#3A73C3' }, // 藍色
-      { bg:'#FFF3E0', color:'#E65100', border:'#FFB74D' }, // 橙色
-      { bg:'#E8F5E9', color:'#2E7D32', border:'#81C784' }, // 綠色
-      { bg:'#EDE7F6', color:'#5E35B1', border:'#B39DDB' }, // 紫色
-      { bg:'#FFF8E1', color:'#F57F17', border:'#FFD54F' }, // 黃色
-      { bg:'#E0F7FA', color:'#00838F', border:'#80DEEA' }, // 青色
       { bg:'#FCE4EC', color:'#AD1457', border:'#F48FB1' }, // 淡粉紅
-      { bg:'#F3E5F5', color:'#7B1FA2', border:'#CE93D8' }, // 紫紅
       { bg:'#E8EAF6', color:'#283593', border:'#9FA8DA' }, // 深藍
+      { bg:'#E0F7FA', color:'#00838F', border:'#80DEEA' }, // 青色
+      { bg:'#F3E5F5', color:'#7B1FA2', border:'#CE93D8' }, // 紫紅
     ];
 
     // 代表行程的顏色樣式
-    const REP_COLOR = { bg:'#E0F2FE', color:'#0277BD', border:'#81D4FA' };
+    const REP_COLOR = { bg:'#E8EAF6', color:'#3A73C3', border:'#3A73C3' };  // 代表 藍色
 
     // 定義全域變數來儲存當前年份與活動資料
     let currentYear = new Date().getFullYear(); // 取得當前年份
@@ -901,7 +915,10 @@
           // 為每個分類分配顏色
           cats.forEach(category => {
             if (!categories.has(category)) {
-              categories.set(category, CATEGORY_COLORS[categories.size % CATEGORY_COLORS.length]);
+              categories.set(
+                category, 
+                PRESET_CATEGORY_COLORS[category] || CATEGORY_COLORS[categories.size % CATEGORY_COLORS.length]
+              );
             }
           });
 
@@ -956,50 +973,73 @@
     }
 
     function buildFilterPills() {
-      const bar = document.getElementById('filterBar'); // 取得篩選條的 DOM 元素
-      const allBtn = bar.querySelector('.filter-pill-all'); // 取得 "全部" 篩選按鈕
-      bar.innerHTML = ''; // 清空篩選條內容
-      allBtn.classList.toggle('active', activeFilter === 'all'); // 如果當前篩選為 "全部"，則將其設為活躍狀態
-      bar.appendChild(allBtn); // 將 "全部" 按鈕重新加入篩選條
+  const bar = document.getElementById('filterBar'); // 取得篩選條的 DOM 元素
+  const allBtn = bar.querySelector('.filter-pill-all'); // 取得 "全部" 篩選按鈕
+  bar.innerHTML = ''; // 清空篩選條內容
+  allBtn.classList.toggle('active', activeFilter === 'all'); // 如果當前篩選為 "全部"，則將其設為活躍狀態
+  bar.appendChild(allBtn); // 將 "全部" 按鈕重新加入篩選條
 
-      // 為每個分類建立篩選按鈕
-      categories.forEach((colors, name) => {
-        const pill = document.createElement('div'); // 建立一個新按鈕
-        pill.className = 'filter-pill' + (activeFilter === name ? ' active' : ''); // 設定按鈕的樣式
-        pill.dataset.category = name; // 設定按鈕的分類名稱
-        pill.onclick = () => filterCategory(name, pill); // 點擊時執行篩選函數
-        pill.innerHTML = `<span class="color-dot" style="background:${colors.border}"></span>${name}`; // 添加分類名稱與顏色點
+  // 遍歷預設標籤，按照固定順序生成篩選按鈕
+  PRESET_CATEGORY_ORDER.forEach(category => {
+    if (categories.has(category)) {
+      const colors = categories.get(category);
+      const pill = document.createElement('div'); // 建立一個新按鈕
+      pill.className = 'filter-pill' + (activeFilter === category ? ' active' : ''); // 設定按鈕的樣式
+      pill.dataset.category = category; // 設定按鈕的分類名稱
+      pill.onclick = () => filterCategory(category, pill); // 點擊時執行篩選函數
+      pill.innerHTML = `<span class="color-dot" style="background:${colors.border}"></span>${category}`; // 添加分類名稱與顏色點
 
-        // 如果按鈕是活躍狀態，設置其樣式
-        if (activeFilter === name) {
-          pill.style.background = colors.bg;
-          pill.style.color = colors.color;
-          pill.style.borderColor = colors.border;
-        }
-        bar.appendChild(pill); // 將按鈕加入篩選條
-      });
-
-      // 如果有代表行程，則添加分隔符與代表行程按鈕
-      if (repEvents.length > 0) {
-        const sep = document.createElement('div'); // 建立分隔符
-        sep.style.cssText = 'width:1px;height:28px;background:#ddd;margin:0 4px;align-self:center;';
-        bar.appendChild(sep); // 將分隔符加入篩選條
-
-        const pill = document.createElement('div'); // 建立代表行程按鈕
-        pill.className = 'filter-pill' + (activeFilter === REP_CATEGORY ? ' active' : ''); // 設定按鈕樣式
-        pill.dataset.category = REP_CATEGORY; // 設定分類名稱
-        pill.onclick = () => filterCategory(REP_CATEGORY, pill); // 點擊時執行篩選函數
-        pill.innerHTML = `<span class="color-dot" style="background:${REP_COLOR.border}"></span>${REP_CATEGORY}`; // 添加代表行程名稱與顏色點
-
-        // 如果按鈕是活躍狀態，設置其樣式
-        if (activeFilter === REP_CATEGORY) {
-          pill.style.background = REP_COLOR.bg;
-          pill.style.color = REP_COLOR.color;
-          pill.style.borderColor = REP_COLOR.border;
-        }
-        bar.appendChild(pill); // 將按鈕加入篩選條
+      // 如果按鈕是活躍狀態，設置其樣式
+      if (activeFilter === category) {
+        pill.style.background = colors.bg;
+        pill.style.color = colors.color;
+        pill.style.borderColor = colors.border;
       }
+      bar.appendChild(pill); // 將按鈕加入篩選條
     }
+  });
+
+  // 為其他非預設分類建立篩選按鈕
+  Array.from(categories.keys())
+    .filter(category => !PRESET_CATEGORY_ORDER.includes(category)) // 過濾掉預設分類
+    .forEach(category => {
+      const colors = categories.get(category);
+      const pill = document.createElement('div'); // 建立一個新按鈕
+      pill.className = 'filter-pill' + (activeFilter === category ? ' active' : ''); // 設定按鈕的樣式
+      pill.dataset.category = category; // 設定按鈕的分類名稱
+      pill.onclick = () => filterCategory(category, pill); // 點擊時執行篩選函數
+      pill.innerHTML = `<span class="color-dot" style="background:${colors.border}"></span>${category}`; // 添加分類名稱與顏色點
+
+      // 如果按鈕是活躍狀態，設置其樣式
+      if (activeFilter === category) {
+        pill.style.background = colors.bg;
+        pill.style.color = colors.color;
+        pill.style.borderColor = colors.border;
+      }
+      bar.appendChild(pill); // 將按鈕加入篩選條
+    });
+
+  // 如果有代表行程，則添加分隔符與代表行程按鈕
+  if (repEvents.length > 0) {
+    const sep = document.createElement('div'); // 建立分隔符
+    sep.style.cssText = 'width:1px;height:28px;background:#ddd;margin:0 4px;align-self:center;';
+    bar.appendChild(sep); // 將分隔符加入篩選條
+
+    const pill = document.createElement('div'); // 建立代表行程按鈕
+    pill.className = 'filter-pill' + (activeFilter === REP_CATEGORY ? ' active' : ''); // 設定按鈕樣式
+    pill.dataset.category = REP_CATEGORY; // 設定分類名稱
+    pill.onclick = () => filterCategory(REP_CATEGORY, pill); // 點擊時執行篩選函數
+    pill.innerHTML = `<span class="color-dot" style="background:${REP_COLOR.border}"></span>${REP_CATEGORY}`; // 添加代表行程名稱與顏色點
+
+    // 如果按鈕是活躍狀態，設置其樣式
+    if (activeFilter === REP_CATEGORY) {
+      pill.style.background = REP_COLOR.bg;
+      pill.style.color = REP_COLOR.color;
+      pill.style.borderColor = REP_COLOR.border;
+    }
+    bar.appendChild(pill); // 將按鈕加入篩選條
+  }
+}
 
     // 篩選活動分類
     function filterCategory(cat, el) {
